@@ -1,0 +1,29 @@
+{
+  "name": "@sapientia/core",
+  "version": "0.1.0",
+  "description": "Domain engine for sapientia: adapters, normalization, ranking, download, catalog, config.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.1.0",
+    "env-paths": "^3.0.0",
+    "undici": "^6.19.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0"
+  }
+}
