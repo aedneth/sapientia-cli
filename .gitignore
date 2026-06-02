@@ -2,3 +2,10 @@ node_modules/
 dist/
 .env
 .DS_Store
+
+# Build / test artifacts
+*.tsbuildinfo
+coverage/
+
+# Private planning material — stripped before the public release.
+docs/planning/

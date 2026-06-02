@@ -1,0 +1,57 @@
+# Sapientia CLI — Commercial License
+
+**This is a summary and offer of terms, not the executed agreement.** The
+binding contract is the signed commercial license agreement provided by the
+licensor. Contact **eduardoa.borjas@gmail.com** to obtain one.
+
+---
+
+## Why a dual license?
+
+Sapientia CLI is **free and open source software** under the
+[GNU Affero General Public License v3.0](./LICENSE) (AGPL-3.0). For the vast
+majority of users — individuals, researchers, autodidacts, archivists,
+librarians, students, and open-source projects — the AGPL-3.0 grants every
+right needed at no cost, forever.
+
+The AGPL-3.0 is a strong copyleft license. In particular, **if you run a
+modified version of Sapientia as a network service, you must offer the complete
+corresponding source code of your modified version to its users.** It also
+requires that derivative works be released under the AGPL-3.0.
+
+A **commercial license** exists for organizations that cannot or do not wish to
+comply with the AGPL-3.0 — for example, when they want to:
+
+- Embed Sapientia (in whole or in part) in a **proprietary, closed-source**
+  product or service without releasing their own source code.
+- Offer a **hosted/SaaS** product built on Sapientia without the AGPL §13
+  network-use source-disclosure obligation.
+- Redistribute Sapientia under terms incompatible with the AGPL-3.0.
+- Obtain a **warranty, indemnification, or commercial support** arrangement.
+
+## What the commercial license grants
+
+Subject to a signed agreement and applicable fees, the commercial license
+typically grants a non-exclusive, non-transferable right to use, modify, and
+distribute Sapientia **without** the copyleft and network-use obligations of the
+AGPL-3.0, under negotiated terms.
+
+## What it does not change
+
+- The open-source version remains available under the AGPL-3.0 for everyone.
+- The commercial license is **optional**. You only need it if the AGPL-3.0 does
+  not fit your use case.
+
+## Ownership
+
+Copyright © Eduardo Borjas and contributors. All rights reserved except as
+granted by the AGPL-3.0 or a separate commercial agreement. "Sapientia" and
+associated marks remain the property of the licensor.
+
+## Contact
+
+**Eduardo Borjas** — eduardoa.borjas@gmail.com
+
+> If you are unsure which license you need: if you are not redistributing a
+> proprietary derivative and not running a modified network service, the free
+> AGPL-3.0 is almost certainly all you need.
