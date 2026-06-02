@@ -6,6 +6,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+_Nothing yet — see the [roadmap](README.md#roadmap)._
+
+## [0.1.0] — 2026-06-02
+
 ### Added
 
 - Monorepo scaffold (pnpm + TypeScript 5.5 + tsup + vitest).
@@ -22,15 +26,10 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Repo-standard files: AGPL-3.0 `LICENSE`, `LICENSE-COMMERCIAL`, `README`,
   `CONTRIBUTING`, `SECURITY`, `CODE_OF_CONDUCT`, issue/PR templates, CI.
 
-## Roadmap
+### Fixed
 
-- **v0.1.0** — first published release (this scaffold, hardened).
-- **v0.2.0** — Open Library + Archive.org + arXiv adapters; ranking tuning.
-- **v0.3.0** — `catalog import` of an existing library taxonomy; Ink TUI browse.
-- **v0.4.0** — `completion`; richer `doctor`; persisted `sources enable/disable`.
-- **v0.5.0** — plugin system + published opt-in `sources-shadow`.
-- **v0.6.0** — full MCP parity + tool schemas.
-- **v0.7.0–v0.9.0** — standalone binaries, Homebrew/Scoop, hardening.
-- **v1.0.0** — frozen `--json` schemas, exit codes, and public API.
+- CI workflow step order: `build` now runs before `typecheck` and `lint` so
+  inter-package TypeScript declaration files exist when needed (TS2307 fix).
 
-[Unreleased]: https://github.com/sapientia/sapientia-cli/commits/main
+[Unreleased]: https://github.com/aedneth/sapientia-cli/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/aedneth/sapientia-cli/releases/tag/v0.1.0
