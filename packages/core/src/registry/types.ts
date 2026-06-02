@@ -30,6 +30,11 @@ export interface CommandContext {
   env: NodeJS.ProcessEnv;
   /** Emit a non-fatal warning into the result envelope. */
   warn: (msg: string) => void;
+  /**
+   * Override the process exit code on success (e.g. PARTIAL = 8 for partial
+   * multi-source results). Has no effect when the handler throws.
+   */
+  setExitCode: (code: number) => void;
 }
 
 export interface CommandDef {

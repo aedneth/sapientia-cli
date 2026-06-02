@@ -142,12 +142,15 @@ export class Catalog {
 
   /** Full-text search across title/author/subjects. */
   search(query: string, limit = 25): CatalogBook[] {
+    // Wrap in FTS5 quoted string so user input with operators (parentheses, colons,
+    // etc.) doesn't throw a SQLite parse error. Double internal quotes to escape.
+    const safeQuery = `"${query.replace(/"/g, '""')}"`;
     const rows = this.db
       .prepare(
         `SELECT b.* FROM books_fts f JOIN books b ON b.id = f.rowid
          WHERE books_fts MATCH ? ORDER BY rank LIMIT ?`,
       )
-      .all(query, limit) as Array<Record<string, unknown>>;
+      .all(safeQuery, limit) as Array<Record<string, unknown>>;
     return rows.map(this.rowToBook);
   }
 
