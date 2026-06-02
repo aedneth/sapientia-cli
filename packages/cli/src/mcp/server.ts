@@ -39,8 +39,11 @@ export async function startMcpServer(
 ): Promise<void> {
   const server = new McpServer({ name: "sapientia", version: VERSION });
 
+  // Exclude mcp (avoid recursion) and config (exposes mutating `set` action — read config
+  // via manifest/config-path or direct file access instead).
+  const MCP_EXCLUDED = new Set(["mcp", "config"]);
   for (const cmd of registry.list()) {
-    if (!cmd.agentSafe || cmd.name === "mcp") continue;
+    if (!cmd.agentSafe || MCP_EXCLUDED.has(cmd.name)) continue;
     server.tool(
       cmd.name.replace(/\./g, "_"),
       cmd.description,

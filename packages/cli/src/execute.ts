@@ -23,6 +23,7 @@ export async function runCommand(
   },
 ): Promise<RunResult> {
   const warnings: string[] = [];
+  let overrideExitCode = 0;
   try {
     const data = await cmd.handler({
       args: opts.args,
@@ -30,8 +31,9 @@ export async function runCommand(
       interactive: isInteractive(opts.flags, opts.env),
       env: opts.env,
       warn: (m) => warnings.push(m),
+      setExitCode: (code) => { overrideExitCode = code; },
     });
-    return { ok: true, data, warnings, exitCode: 0 };
+    return { ok: true, data, warnings, exitCode: overrideExitCode };
   } catch (err) {
     const e = toSapientiaError(err);
     return {

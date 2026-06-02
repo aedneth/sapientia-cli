@@ -3,7 +3,6 @@ import type { CommandDef, FlagDef } from "./types.js";
 /** Global flags every command inherits; documented once, applied everywhere. */
 export const GLOBAL_FLAGS: FlagDef[] = [
   { name: "json", type: "boolean", description: "Emit machine-readable JSON envelope." },
-  { name: "ndjson", type: "boolean", description: "Stream results as newline-delimited JSON." },
   { name: "yes", short: "y", type: "boolean", description: "Skip confirmation prompts." },
   { name: "no-input", type: "boolean", description: "Never prompt; fail instead (agent mode)." },
   { name: "accept-legal", type: "boolean", description: "Accept legal acknowledgment for gated sources." },

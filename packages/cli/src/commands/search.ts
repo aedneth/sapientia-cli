@@ -1,4 +1,5 @@
 import {
+  ExitCode,
   rankResults,
   SearchQuerySchema,
   UsageError,
@@ -57,6 +58,8 @@ export const searchCommand: CommandDef = {
 
     const reliability = (id: string) => (sources.get(id)?.kind === "open" ? 0.9 : 0.6);
     const ranked = rankResults(results, config.ranking.weights, reliability);
+
+    if (failures > 0) ctx.setExitCode(ExitCode.PARTIAL);
 
     return {
       query: query.text,

@@ -1,4 +1,4 @@
-import { type CommandDef } from "@sapientia/core";
+import { UsageError, type CommandDef } from "@sapientia/core";
 import { adapterContext, createRuntime } from "../runtime.js";
 
 export const sourcesCommand: CommandDef = {
@@ -18,9 +18,16 @@ export const sourcesCommand: CommandDef = {
   async handler(ctx) {
     const { config, sources } = await createRuntime(ctx.env);
     const action = (ctx.args.action as string) ?? "list";
+    if (action === "enable" || action === "disable") {
+      // Persistent source toggling ships in v0.4 — return an error rather than
+      // silently returning ok:true (which would mislead agents branching on exit code).
+      throw new UsageError(
+        `'sources ${action}' is not yet implemented — persistence arrives in v0.4. ` +
+          `Track: https://github.com/aedneth/sapientia-cli/issues`,
+      );
+    }
     if (action !== "list") {
-      // enable/disable mutate config; full impl lands with `config set` plumbing (v0.4).
-      ctx.warn(`'${action}' is recognized; persistence arrives in v0.4 via config set.`);
+      throw new UsageError(`Unknown sources action: ${action}. Valid actions: list.`);
     }
 
     const list = await Promise.all(
