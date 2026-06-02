@@ -1,0 +1,38 @@
+name: New source request
+description: Request support for a new open/legal library source
+labels: ["source-request"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Source name
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Source URL
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Source kind
+      options:
+        - Open archive (public domain / freely licensed)
+        - Academic (open access)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: api
+    attributes:
+      label: API / access method
+      description: Does it have a public API, OPDS feed, or only HTML? Link docs if any.
+  - type: checkboxes
+    id: legal
+    attributes:
+      label: Legal
+      options:
+        - label: This source distributes public-domain or freely/openly licensed works.
+          required: true
