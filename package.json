@@ -1,6 +1,6 @@
 {
   "name": "sapientia-monorepo",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Multi-source ebook search/download/library manager — agent-native CLI.",
   "license": "AGPL-3.0-or-later",
@@ -26,11 +26,13 @@
     "tsx": "^4.16.0",
     "typescript": "^5.5.0",
     "typescript-eslint": "^8.0.0",
+    "vite": "^6.4.2",
     "vitest": "^4.1.8"
   },
   "pnpm": {
     "overrides": {
-      "esbuild": ">=0.25.0"
+      "esbuild": ">=0.25.0",
+      "vite": "^6.4.2"
     }
   }
 }

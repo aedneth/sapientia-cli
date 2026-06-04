@@ -1,37 +1,38 @@
 # Security Policy
 
-## Reporting a vulnerability
+## Supported Versions
 
-Please report security vulnerabilities **privately**. Do not open a public issue
-for security problems.
+| Version | Supported |
+|---------|-----------|
+| latest  | ✅        |
+| < latest | ❌ — update to latest |
 
-- Email: **eduardoa.borjas@gmail.com** with subject `SECURITY: sapientia-cli`
-- Or use GitHub's **private vulnerability reporting** ("Report a vulnerability"
-  under the Security tab).
+## Reporting a Vulnerability
 
-We aim to acknowledge reports within 72 hours and to provide a remediation
-timeline after triage. Please give us a reasonable window to release a fix before
-public disclosure.
+**Do not open a public GitHub issue for security vulnerabilities.**
 
-## Supported versions
+Email: eduardoa.borjas@gmail.com
 
-During the `0.x` series, only the latest minor release receives security fixes.
-Once `1.0.0` ships, this section will list supported version ranges.
+Include:
+- Description of the vulnerability
+- Steps to reproduce
+- Potential impact
+- Any suggested fix (optional)
 
-## Scope
+You will receive a response within 48 hours. If confirmed, a patch will be released within 7 days.
 
-In scope: the `sapientia` CLI, `@sapientia/core`, and bundled adapters. Issues
-include (but aren't limited to) path traversal on download/catalog, unsafe
-deserialization, SSRF via source URLs, and integrity-verification bypass.
+## Supply Chain Security
 
-## Copyright / takedown (DMCA) contact
+This project implements zero-trust npm security:
 
-Sapientia ships **no copyrighted content** and bundles adapters only for open,
-public-domain, and legal archives. Shadow-library adapters are not part of this
-repository (they live in a separate, opt-in package).
+- **`ignore-scripts=true`** in `.npmrc` — blocks all postinstall/preinstall lifecycle scripts during `npm install`/`npm ci`. Prevents supply chain attacks via compromised transitive dependencies.
+- **Explicit native module whitelist** — only named, reviewed native modules (listed in CI) are allowed to compile. All others are blocked.
+- **Pinned GitHub Actions** — all Actions are pinned to a specific commit SHA, not a mutable tag. This prevents compromised Action tags from injecting malicious steps.
+- **`npm publish --provenance`** — every published release includes a signed SLSA attestation linking the package to the exact GitHub Actions run that built it. Verify with: `npm audit signatures <package>@<version>`
+- **`npm ci` in all CI jobs** — never `npm install`. Enforces exact cryptographic hash matching against `package-lock.json`.
+- **Minimum permissions** — each CI job declares only the permissions it needs. Default is `permissions: {}` (deny all).
+- **Weekly automated audit** — the Security Audit workflow runs every Monday at 09:00 UTC and fails on any moderate or higher vulnerability.
 
-If you believe content reachable through a bundled source infringes your rights,
-contact **eduardoa.borjas@gmail.com** with subject `DMCA: sapientia-cli`,
-including the work, the source, and your contact details. Note that Sapientia is
-a client that fetches from third-party archives on the user's explicit request;
-takedowns generally must be directed to the hosting archive.
+## Known Mitigations
+
+Any known vulnerability mitigations (e.g., transitive dependency overrides) are documented in the relevant CI workflow files with inline comments.

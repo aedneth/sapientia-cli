@@ -56,7 +56,12 @@ export const searchCommand: CommandDef = {
       }
     });
 
-    const reliability = (id: string) => (sources.get(id)?.kind === "open" ? 0.9 : 0.6);
+    // Standard Ebooks' hand-crafted EPUBs are the best available, so it edges out
+    // other open archives; shadow/scraper sources rank below all bundled archives.
+    const reliability = (id: string) => {
+      if (id === "standard-ebooks") return 1.0;
+      return sources.get(id)?.kind === "open" ? 0.9 : 0.6;
+    };
     const ranked = rankResults(results, config.ranking.weights, reliability);
 
     if (failures > 0) ctx.setExitCode(ExitCode.PARTIAL);

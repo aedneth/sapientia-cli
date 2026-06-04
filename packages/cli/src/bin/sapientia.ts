@@ -11,6 +11,24 @@ function argSignature(a: ArgDef): string {
   return a.required ? `<${inner}>` : `[${inner}]`;
 }
 
+function camelCase(name: string): string {
+  return name.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+}
+
+/**
+ * Commander stores hyphenated options under camelCased keys (`--to-catalog` →
+ * `toCatalog`). Handlers and the MCP server address flags by their declared name,
+ * so alias each declared flag's value back onto its hyphenated key.
+ */
+function normalizeFlags(def: CommandDef, raw: Record<string, unknown>): Record<string, unknown> {
+  const flags = { ...raw };
+  for (const f of [...GLOBAL_FLAGS, ...def.flags]) {
+    const camel = camelCase(f.name);
+    if (camel !== f.name && camel in flags) flags[f.name] = flags[camel];
+  }
+  return flags;
+}
+
 function addFlag(cmd: Command, f: FlagDef): void {
   const long = `--${f.name}`;
   const flags =
@@ -45,7 +63,7 @@ function main(): void {
     cmd.action(async (...callArgs: unknown[]) => {
       const command = callArgs[callArgs.length - 1] as Command;
       const positionals = callArgs.slice(0, def.args.length);
-      const flags = command.optsWithGlobals();
+      const flags = normalizeFlags(def, command.optsWithGlobals());
 
       const args: Record<string, string | string[] | undefined> = {};
       def.args.forEach((a, i) => {

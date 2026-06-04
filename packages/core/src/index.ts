@@ -23,6 +23,10 @@ export * from "./download/download.js";
 // Catalog
 export * from "./catalog/catalog.js";
 
+// Library import (bulk indexing of an existing collection)
+export * from "./import/filename.js";
+export * from "./import/importer.js";
+
 // Command registry (agent-native spine)
 export * from "./registry/types.js";
 export * from "./registry/registry.js";

@@ -1,6 +1,6 @@
 {
   "name": "@sapientia/core",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Domain engine for sapientia: adapters, normalization, ranking, download, catalog, config.",
   "license": "AGPL-3.0-or-later",
   "type": "module",
@@ -24,6 +24,7 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.0"
+    "@types/better-sqlite3": "^7.6.0",
+    "typescript": "^5.5.0"
   }
 }
