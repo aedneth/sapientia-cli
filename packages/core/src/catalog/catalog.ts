@@ -140,6 +140,12 @@ export class Catalog {
       .get(sha256);
   }
 
+  // Aggregate each book's authors into one column so a single query returns them.
+  private static readonly AUTHORS_SUBQUERY = `(
+      SELECT group_concat(a.name, char(31)) FROM book_authors ba
+      JOIN authors a ON a.id = ba.author_id WHERE ba.book_id = b.id
+    ) AS authors_concat`;
+
   /** Full-text search across title/author/subjects. */
   search(query: string, limit = 25): CatalogBook[] {
     // Wrap in FTS5 quoted string so user input with operators (parentheses, colons,
@@ -147,7 +153,7 @@ export class Catalog {
     const safeQuery = `"${query.replace(/"/g, '""')}"`;
     const rows = this.db
       .prepare(
-        `SELECT b.* FROM books_fts f JOIN books b ON b.id = f.rowid
+        `SELECT b.*, ${Catalog.AUTHORS_SUBQUERY} FROM books_fts f JOIN books b ON b.id = f.rowid
          WHERE books_fts MATCH ? ORDER BY rank LIMIT ?`,
       )
       .all(safeQuery, limit) as Array<Record<string, unknown>>;
@@ -156,7 +162,10 @@ export class Catalog {
 
   list(limit = 50): CatalogBook[] {
     const rows = this.db
-      .prepare("SELECT * FROM books ORDER BY added_at DESC LIMIT ?")
+      .prepare(
+        `SELECT b.*, ${Catalog.AUTHORS_SUBQUERY} FROM books b
+         ORDER BY b.added_at DESC LIMIT ?`,
+      )
       .all(limit) as Array<Record<string, unknown>>;
     return rows.map(this.rowToBook);
   }
@@ -169,7 +178,7 @@ export class Catalog {
     id: r.id as number,
     title: r.title as string,
     subtitle: (r.subtitle as string) ?? undefined,
-    authors: [],
+    authors: r.authors_concat ? String(r.authors_concat).split("\x1f") : [],
     year: (r.year as number) ?? undefined,
     language: (r.language as string) ?? undefined,
     format: (r.format as string) ?? undefined,

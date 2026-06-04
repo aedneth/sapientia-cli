@@ -13,6 +13,18 @@ import type { Writable } from "node:stream";
 
 const GUTENDEX = "https://gutendex.com/books";
 
+/**
+ * Project Gutenberg asks automated clients to stay under ~1 request/second. Keep a
+ * courteous gap between any network call this adapter makes (search and download).
+ */
+const MIN_INTERVAL_MS = 1000;
+let lastRequestAt = 0;
+async function throttle(): Promise<void> {
+  const wait = lastRequestAt + MIN_INTERVAL_MS - Date.now();
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  lastRequestAt = Date.now();
+}
+
 interface GutendexBook {
   id: number;
   title: string;
@@ -37,6 +49,7 @@ export class GutenbergAdapter implements SourceAdapter {
     const url = new URL(GUTENDEX);
     url.searchParams.set("search", [query.text, query.author].filter(Boolean).join(" "));
     if (query.language) url.searchParams.set("languages", query.language);
+    await throttle();
     const res = await ctx.fetch(url, {
       signal: ctx.signal,
       headers: { "user-agent": ctx.userAgent },
@@ -47,6 +60,7 @@ export class GutenbergAdapter implements SourceAdapter {
   }
 
   async resolve(sourceRef: string, ctx: AdapterContext): Promise<BookMetadata> {
+    await throttle();
     const res = await ctx.fetch(`${GUTENDEX}/${sourceRef}`, {
       signal: ctx.signal,
       headers: { "user-agent": ctx.userAgent },
@@ -63,6 +77,7 @@ export class GutenbergAdapter implements SourceAdapter {
   ): Promise<{ bytesWritten: number }> {
     const headers: Record<string, string> = { "user-agent": ctx.userAgent };
     if (range) headers.range = `bytes=${range.start}-`;
+    await throttle();
     const res = await ctx.fetch(candidate.url, { signal: ctx.signal, headers });
     if (!res.ok || !res.body) throw new SourceUnavailableError(`Download failed: ${res.status}`);
     let bytesWritten = 0;

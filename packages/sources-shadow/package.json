@@ -1,6 +1,6 @@
 {
   "name": "@sapientia/sources-shadow",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "OPT-IN shadow-library source adapters. Installed and enabled separately; requires explicit legal acknowledgment.",
   "license": "AGPL-3.0-or-later",
   "type": "module",
@@ -19,5 +19,8 @@
   },
   "dependencies": {
     "@sapientia/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
   }
 }
