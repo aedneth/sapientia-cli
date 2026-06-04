@@ -30,10 +30,16 @@ jobs:
       - name: Install dependencies (zero-trust)
         run: pnpm install --frozen-lockfile --ignore-scripts
 
-      - name: Rebuild trusted native modules
-        run: pnpm rebuild better-sqlite3
-        env:
-          npm_config_ignore_scripts: 'false'
+      # .npmrc sets ignore-scripts=true (zero-trust), which also gates `pnpm rebuild`
+      # regardless of env/flags. Invoke better-sqlite3's own build directly instead:
+      # prebuild-install fetches the official prebuilt binary; node-gyp compiles as a
+      # fallback. This is the only path that actually produces the native binding.
+      - name: Rebuild trusted native modules (better-sqlite3)
+        shell: bash
+        run: |
+          BSDIR="$(node -e "const p=require('path');process.stdout.write(p.dirname(require.resolve('better-sqlite3/package.json',{paths:[p.join(process.cwd(),'packages/core')]})))")"
+          cd "$BSDIR"
+          PATH="$PWD/node_modules/.bin:$PATH" sh -c 'prebuild-install || node-gyp rebuild --release'
 
       - name: Dependency security audit
         run: pnpm audit --audit-level high

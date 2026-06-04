@@ -38,11 +38,16 @@ jobs:
         run: pnpm install --frozen-lockfile --ignore-scripts
 
       # better-sqlite3 ships native bindings compiled at install time.
-      # Whitelisted: source-available, embedded SQLite3, no network calls.
-      - name: Rebuild trusted native modules
-        run: pnpm rebuild better-sqlite3
-        env:
-          npm_config_ignore_scripts: 'false'
+      # Whitelisted: source-available, embedded SQLite3.
+      # .npmrc sets ignore-scripts=true (zero-trust), which also gates `pnpm rebuild`
+      # regardless of env/flags — so invoke better-sqlite3's own build directly:
+      # prebuild-install fetches the official prebuilt binary; node-gyp is the fallback.
+      - name: Rebuild trusted native modules (better-sqlite3)
+        shell: bash
+        run: |
+          BSDIR="$(node -e "const p=require('path');process.stdout.write(p.dirname(require.resolve('better-sqlite3/package.json',{paths:[p.join(process.cwd(),'packages/core')]})))")"
+          cd "$BSDIR"
+          PATH="$PWD/node_modules/.bin:$PATH" sh -c 'prebuild-install || node-gyp rebuild --release'
 
       # pnpm audit for supply chain scanning
       - name: Dependency security audit
