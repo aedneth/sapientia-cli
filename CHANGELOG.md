@@ -6,7 +6,11 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-_Nothing yet — see the [roadmap](README.md#roadmap)._
+### Infrastructure
+
+- The `@sapientia` npm organization is now live, unblocking scoped package
+  publishing (`@sapientia/core`, `@sapientia/cli`, `@sapientia/sources-open`,
+  `@sapientia/sources-shadow`).
 
 ## [0.1.0] — 2026-06-02
 
